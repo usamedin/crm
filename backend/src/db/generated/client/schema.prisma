@@ -9,6 +9,12 @@ datasource crm {
 }
 
 model Product {
-  id   Int @id
+  id    Int    @id
+  name  String
+  price Int
+}
+
+model Customer {
+  id   Int    @id
   name String
 }

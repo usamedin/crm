@@ -3,6 +3,7 @@ import { PrismaClient } from '../src/db/generated/client';
 
 const prisma = new PrismaClient();
 const uniqueProductIds: number[] = []
+const uniqueCustomerIds: number[] = []
 
 const seed = async () => {
   const data = fs.readFileSync('./prisma/homework_order_lines.csv', 'utf8')
@@ -13,6 +14,7 @@ const seed = async () => {
     const properties = line.split(',')
 
     addProduct(properties, headers)
+    addCustomer(properties, headers)
   }
 
   console.log(uniqueProductIds)
@@ -20,20 +22,37 @@ const seed = async () => {
 }
 
 function addProduct(properties: string[], headers: string[]) {
-  const productIdIndex = headers.indexOf('Product ID')
-  const productNameIndex = headers.indexOf('Product Name')
+  const idIndex = headers.indexOf('Product ID')
+  const nameIndex = headers.indexOf('Product Name')
+  const totalPriceIndex = headers.indexOf('Total Price')
+  const quantityIndex = headers.indexOf('Quantity')
 
-  const productId = parseInt(properties[productIdIndex])
-  const productName = properties[productNameIndex]
+  const id = parseInt(properties[idIndex])
+  const name = properties[nameIndex]?.trim()
+  const totalPrice = parseFloat(properties[totalPriceIndex])
+  const quantity = parseInt(properties[quantityIndex])
 
-  if (productId && !uniqueProductIds.includes(productId)) {
-    uniqueProductIds.push(productId)
+  if (id && !uniqueProductIds.includes(id)) {
+    uniqueProductIds.push(id)
 
     return prisma.product.create({
-      data: {
-        id: productId,
-        name: productName
-      }
+      data: { id, name, price: totalPrice / quantity }
+    })
+  }
+}
+
+function addCustomer(properties: string[], headers: string[]) {
+  const idIndex = headers.indexOf('Customer ID')
+  const nameIndex = headers.indexOf('Customer Name')
+
+  const id = parseInt(properties[idIndex])
+  const name = properties[nameIndex]?.trim()
+
+  if (id && !uniqueCustomerIds.includes(id)) {
+    uniqueCustomerIds.push(id)
+
+    return prisma.customer.create({
+      data: { id, name }
     })
   }
 }
