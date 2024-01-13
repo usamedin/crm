@@ -4,12 +4,16 @@
   "description": "CRM service",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node app.ts",
-    "dev": "nodemon app.ts",
+    "start": "prisma:seed && ts-node app.ts",
+    "dev": "npm run prisma:seed && nodemon app.ts",
+    "prisma:seed": "prisma db seed",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:createMigration": "prisma migrate dev",
     "prisma:reset": "prisma migrate reset"
+  },
+  "prisma": {
+    "seed": "ts-node --transpile-only ./prisma/seed.ts"
   },
   "author": "Medin",
   "license": "ISC",

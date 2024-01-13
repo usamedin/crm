@@ -9,6 +9,6 @@ datasource crm {
 }
 
 model Product {
-  id   String @id @default(cuid())
+  id   Int @id
   name String
 }
