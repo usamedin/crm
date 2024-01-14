@@ -9,7 +9,7 @@
     "prisma:seed": "prisma db seed",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
-    "prisma:createMigration": "prisma migrate dev",
+    "prisma:createMigration": "prisma migrate dev && npm run prisma:generate",
     "prisma:reset": "prisma migrate reset"
   },
   "prisma": {
