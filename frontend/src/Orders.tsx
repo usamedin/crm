@@ -54,15 +54,7 @@ export default function Orders({ customer }: Props) {
         :
         <div>
           <table className='orders' >
-            <thead>
-              <tr>
-                <td></td>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-              </tr>
-            </thead>
+            <TableHeader />
             <tbody>
               {orders.map((order: any) => (<Order
                 checked={selectedOrders.includes(order.id)}
@@ -74,22 +66,13 @@ export default function Orders({ customer }: Props) {
           <button onClick={addToFollowUpList} >Add To Followup List</button>
         </div>}
 
-
       <h1>Follow-up Orders</h1>
       {followUpOrders.length === 0 ?
         <div>No orders</div>
         :
         <div>
           <table className='orders' >
-            <thead>
-              <tr>
-                <td></td>
-                <th>Order ID</th>
-                <th>Date</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-              </tr>
-            </thead>
+            <TableHeader />
             <tbody>
               {followUpOrders.map((order: any) => (<Order key={order.id} order={order} selectOrder={selectOrder} />))}
             </tbody>
@@ -115,5 +98,19 @@ function Order({ order, selectOrder, checked }: any) {
       <td>{order.quantity}</td>
       <td>{order.totalPrice}</td>
     </tr>
+  )
+}
+
+function TableHeader() {
+  return (
+    <thead>
+      <tr>
+        <td></td>
+        <th>Order ID</th>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
   )
 }
