@@ -5,7 +5,6 @@ import Orders from './Orders';
 
 function App() {
   const [customer, setCustomer] = useState<string>();
-  const [followUpOrders, setFollowUpOrders] = useState([]);
 
   return (
     <div className="App">

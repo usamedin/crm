@@ -4,7 +4,5 @@ const prisma = new PrismaClient();
 
 export async function getCustomerOrders(event: HandlerEvent, context: Context) {
   const customerId = event.params.customerId
-  const orders = await prisma.order.findMany({ where: { customerId } })
-  console.log(customerId, orders)
-  return orders
+  return prisma.order.findMany({ where: { customerId } })
 }

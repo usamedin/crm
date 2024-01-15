@@ -10,7 +10,7 @@ type Props = {
 
 export default function Orders({ customer }: Props) {
   const [orders, setOrders] = useState([]);
-  const [followUpOrders, setFollowUpOrders] = useState([]);
+  const [followUpOrders, setFollowUpOrders] = useState<any[]>([]);
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
 
   useEffect(() => {
@@ -23,9 +23,15 @@ export default function Orders({ customer }: Props) {
       }
     };
 
-    if (customer)
+    if (customer) {
       fetchOrders();
+      setFollowUpOrders([])
+    }
   }, [customer]);
+
+  useEffect(() => {
+    setOrders(orders.filter((order: any) => !followUpOrders.includes(order)))
+  }, [followUpOrders]);
 
   function selectOrder(checked: boolean, orderId: string) {
     if (checked) {
@@ -36,7 +42,7 @@ export default function Orders({ customer }: Props) {
   }
 
   function addToFollowUpList() {
-    setFollowUpOrders([...orders.filter((order: any) => selectedOrders.includes(order.id))])
+    setFollowUpOrders([...followUpOrders, ...orders.filter((order: any) => selectedOrders.includes(order.id))])
     setSelectedOrders([])
   }
 
@@ -58,7 +64,11 @@ export default function Orders({ customer }: Props) {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order: any) => (<Order key={order.id} order={order} selectOrder={selectOrder} />))}
+              {orders.map((order: any) => (<Order
+                checked={selectedOrders.includes(order.id)}
+                key={order.id}
+                order={order}
+                selectOrder={selectOrder} />))}
             </tbody>
           </table >
           <button onClick={addToFollowUpList} >Add To Followup List</button>
@@ -81,18 +91,25 @@ export default function Orders({ customer }: Props) {
               </tr>
             </thead>
             <tbody>
-              {orders.map((order: any) => (<Order key={order.id} order={order} selectOrder={selectOrder} />))}
+              {followUpOrders.map((order: any) => (<Order key={order.id} order={order} selectOrder={selectOrder} />))}
             </tbody>
           </table>
+          <br />
+          <div className='totals'>
+            <div>Total Items: {followUpOrders.reduce((sum, item) => sum + item.quantity, 0)}</div>
+            <div>Total Price: {followUpOrders.reduce((sum, item) => sum + item.totalPrice, 0)}</div>
+          </div>
         </div>}
-    </div>
+    </div >
   );
 }
 
-function Order({ order, selectOrder }: any) {
+function Order({ order, selectOrder, checked }: any) {
   return (
     <tr>
-      <td><input type='checkbox' onChange={(e) => selectOrder(e.target.checked, order.id)} /></td>
+      <td><input type='checkbox'
+        checked={checked}
+        onChange={(e) => selectOrder(e.target.checked, order.id)} /></td>
       <td>{order.id}</td>
       <td>{order.date}</td>
       <td>{order.quantity}</td>
