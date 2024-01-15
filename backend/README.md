@@ -14,6 +14,11 @@ VERSION=0.1.0
 
 DATABASE_URL="file:./dev.db"
 ```
+
+## Run the project
+```
+npm start
+```
 # Project Architecture
 
 # Future Improvements
