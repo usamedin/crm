@@ -29,12 +29,12 @@ const seed = async () => {
     const productName = properties[productNameIndex]?.trim()
     const totalPrice = parseFloat(properties[totalPriceIndex])
     const quantity = parseInt(properties[quantityIndex])
-    const customerId = parseInt(properties[customerIdIndex])
+    const customerId = properties[customerIdIndex]
     const customerName = properties[customerNameIndex]?.trim()
 
     await addProduct(productId, productName, totalPrice, quantity)
-    // await addCustomer(customerId, customerName)
-    // await addOrders(orderId, customerId, productId, quantity, totalPrice, date)
+    await addCustomer(customerId, customerName)
+    await addOrders(orderId, customerId, productId, quantity, totalPrice, date)
   }
 
   process.exit();
@@ -50,20 +50,23 @@ async function addProduct(id: number, name: string, totalPrice: number, quantity
   }
 }
 
-async function addCustomer(id: number, name: string) {
+async function addCustomer(id: string, name: string) {
   try {
     if (id) {
+      // console.log('customer', { id, name })
       await prisma.customer.create({
         data: { id, name }
       })
     }
-  } catch (err) { }
+  } catch (err) {
+    // console.log('FAILED', { id, name }, err)
+  }
 }
 
-async function addOrders(id: number, customerId: number, productId: number, quantity: number, totalPrice: number, date: Date) {
+async function addOrders(id: number, customerId: string, productId: number, quantity: number, totalPrice: number, date: Date) {
   try {
     if (id) {
-      prisma.order.create({
+      await prisma.order.create({
         data: { id, customerId, productId, quantity, totalPrice, date }
       })
     }

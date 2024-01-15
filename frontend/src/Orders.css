@@ -1,0 +1,9 @@
+.orders {
+  width: 600px;
+  margin: 0 auto;
+}
+
+.order>td {
+  margin: 10px 0;
+  padding: 5px;
+}
