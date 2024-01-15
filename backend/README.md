@@ -19,7 +19,11 @@ DATABASE_URL="file:./dev.db"
 ```
 npm start
 ```
-# Project Architecture
+# Technologies
+- NodeJS
+- Typescript
+- Express (http server)
+- Prisma DB model manager using SQLite3
 
-# Future Improvements
-
+## TODO:
+- Improve types to not use "any"
